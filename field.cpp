@@ -98,11 +98,17 @@ void Field::draw_field(bool showGeneration)
  */
 void Field::print_alive()
 {
-    cout << "Живые клетки:" << endl;
-    for(auto &item : aliveCells) {
-        cout << "x = " << item.first % widthOfField << " y = " << item.first / widthOfField <<
-                " Поколение: " << item.second << endl;
+    cout << endl;
+    if(aliveCells.size() > 0) {
+        cout << "Живые клетки:" << endl;
+        for(auto &item : aliveCells) {
+            cout << "x = " << item.first % widthOfField << " y = " << item.first / widthOfField <<
+                    " Поколение: " << item.second << endl;
+        }
+    } else {
+        cout << "Живых клеток нет" << endl;
     }
+
     cout << endl;
 }
 
@@ -118,7 +124,6 @@ void Field::next_generation()
         }
     }
     aliveCells.clear();
-    print_alive();
     for(int i = 0; i < heightOfField; i++) {
         for(int j = 0; j < widthOfField; j++) {
             int numberOfNeighbors = check_neighbors(j, i);
@@ -127,8 +132,8 @@ void Field::next_generation()
             } else if ((field[i][j] == 0)&&(numberOfNeighbors == 3)) {
                 newGeneration[i][j] = 1;
             }
-            if (field[i][j] > 0) {
-                aliveCells.insert(pair<int, int>(i * widthOfField + j, field[i][j]));
+            if (newGeneration[i][j] > 0) {
+                aliveCells.insert(pair<int, int>(i * widthOfField + j, newGeneration[i][j]));
             }
         }
     }
